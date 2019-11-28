@@ -5,8 +5,8 @@
  */
 package Servlets;
 
+import DB.Database;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -33,10 +33,15 @@ public class OnLoginServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String username =request.getParameter("username");
-        String pw =request.getParameter("pw");
-        RequestDispatcher rd = getServletContext().getRequestDispatcher("/shop.jsp");
-        rd.forward(request, response);
+        String username = request.getParameter("username");
+        String pw = request.getParameter("pw");
+        Database db = Database.getInstance();
+
+        if (db.checkPassword(username, pw)) {
+            RequestDispatcher rd = getServletContext().getRequestDispatcher("/shop.jsp");
+            rd.forward(request, response);
+        }
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -7,6 +7,7 @@ package DB;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
@@ -46,13 +47,20 @@ public class Database {
         conn = DriverManager.getConnection("jdbc:postgresql://localhost/onlineshopdb", "postgres", "postgres");
     }
 
-    public void getPassword(String username) {
+    public boolean checkPassword(String username, String pw) {
         try {
             Statement stat = conn.createStatement();
             String sql = "SELECT * FROM customer WHERE username='" + username + "';";
+            ResultSet rs = stat.executeQuery(sql);
+
+            while (rs.next()) {
+                System.out.println(pw+"++"+rs.getString("password"));
+                return pw.equals(rs.getString("password"));
+            }
         } catch (SQLException ex) {
             Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return false;
     }
 
     public static void main(String[] args) {
