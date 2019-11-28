@@ -79,19 +79,19 @@ public class Database {
     }
 
     public int getcaID(int userid) throws SQLException {
-        PreparedStatement stat = conn.prepareStatement("SELECT COUNT(id) FROM cart WHERE customerID=?;");
+        PreparedStatement stat = conn.prepareStatement("SELECT COUNT(id) FROM cart WHERE customerid=?;");
         stat.setInt(1, userid);
         ResultSet rs = stat.executeQuery();
 
         rs.next();
         if (rs.getInt("count") == 1) {
-            stat = conn.prepareStatement("SELECT id FROM cart WHERE customerID=?;");
+            stat = conn.prepareStatement("SELECT id FROM cart WHERE customerid=?;");
             stat.setInt(1, userid);
             rs = stat.executeQuery();
             rs.next();
             return rs.getInt("id");
         } else {
-            stat = conn.prepareStatement("INSERT INTO cart(customerID) VALUES (?);");
+            stat = conn.prepareStatement("INSERT INTO cart(customerid) VALUES (?);");
             stat.setInt(1, userid);
             stat.execute();
             return getcaID(userid);
@@ -101,8 +101,8 @@ public class Database {
     public ArrayList<Alpaca> getAlpacas(int cartID) throws SQLException {
         ArrayList<Alpaca> alpacas = new ArrayList();
 
-        String sql = "SELECT * FROM alpaca a INNER JOIN carPosition cp ON a.ID =cp.apID"
-                + "WHERE cp.caID=?;";
+        String sql = "SELECT * FROM alpaca a LEFT OUTER JOIN cartposition cp ON a.id =cp.alpacaid"
+                + "WHERE cp.cartid=?;";
         PreparedStatement stat = conn.prepareStatement(sql);
         stat.setInt(1, cartID);
         ResultSet rs = stat.executeQuery();
@@ -111,7 +111,7 @@ public class Database {
             Alpaca a = new Alpaca(rs.getInt("id"), rs.getString("typ"), rs.getInt("price"), rs.getInt("amount"));
             alpacas.add(a);
         }
-
+        System.out.println(alpacas);
         return alpacas;
     }
 

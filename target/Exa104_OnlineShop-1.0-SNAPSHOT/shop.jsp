@@ -3,7 +3,7 @@
     Created on : 20.11.2019, 10:58:32
     Author     : vizug
 --%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -12,6 +12,33 @@
         <title>Alpaca Shop</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <table>
+            <tr>
+                <td>
+                    ID
+                </td>
+                <td>
+                    Type
+                </td>
+                <td>
+                    Price
+                </td>
+            </tr>
+            <c:forEach items="${requestScope.alpacas}" var="alpaca">
+                <tr>
+                    <td>
+                        <c:out value="${alpaca.id}"/>
+                    </td>
+                    <td>
+                        <c:out value="${alpaca.typ}"/>
+                    </td>
+                    <td>
+                        <c:out value="${alpaca.price}"/>
+                    </td>
+                </tr>    
+            </c:forEach>
+
+        </table>
+        <form></form>
     </body>
 </html>

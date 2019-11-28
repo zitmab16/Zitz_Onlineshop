@@ -1,5 +1,6 @@
-BL\Item.class
+BL\Ordering.class
+Servlets\OnLoginServlet.class
+BL\Alpaca.class
 DB\Database.class
 BL\Customer.class
 Servlets\OnStartServlet.class
-BL\Ordering.class

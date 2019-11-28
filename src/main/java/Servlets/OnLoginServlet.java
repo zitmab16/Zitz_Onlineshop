@@ -47,13 +47,15 @@ public class OnLoginServlet extends HttpServlet {
             if (db.checkPassword(username, pw)) {
                 Cookie c = new Cookie("userID",""+db.getUID(username));
                 response.addCookie(c);
+                System.out.println("user= "+db.getUID(username));
+                System.out.println("cartid="+db.getcaID(db.getUID(username)));
                 ArrayList<Alpaca> alpacas = db.getAlpacas(db.getcaID(db.getUID(username)));
                 RequestDispatcher rd = getServletContext().getRequestDispatcher("/shop.jsp");
                 request.setAttribute("alpacas", alpacas);
                 rd.forward(request, response);
             }
         } catch (Exception ex) {
-            Logger.getLogger(OnLoginServlet.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.getMessage());
         } 
     }
 
