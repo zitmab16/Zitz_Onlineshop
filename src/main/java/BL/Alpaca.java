@@ -13,11 +13,13 @@ public class Alpaca {
     private int id;
     private String typ;
     private int price;
+    private int amount;
 
-    public Alpaca(int id, String typ, int price) {
+    public Alpaca(int id, String typ, int price,int amount) {
         this.id = id;
         this.typ = typ;
         this.price = price;
+        this.amount=amount;
     }
 
     public int getId() {

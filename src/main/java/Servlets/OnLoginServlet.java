@@ -5,11 +5,17 @@
  */
 package Servlets;
 
+import BL.Alpaca;
 import DB.Database;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,17 +37,24 @@ public class OnLoginServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    {
         response.setContentType("text/html;charset=UTF-8");
         String username = request.getParameter("username");
         String pw = request.getParameter("pw");
         Database db = Database.getInstance();
-
-        if (db.checkPassword(username, pw)) {
-            RequestDispatcher rd = getServletContext().getRequestDispatcher("/shop.jsp");
-            rd.forward(request, response);
-        }
-
+        
+        try {
+            if (db.checkPassword(username, pw)) {
+                Cookie c = new Cookie("userID",""+db.getUID(username));
+                response.addCookie(c);
+                ArrayList<Alpaca> alpacas = db.getAlpacas(db.getcaID(db.getUID(username)));
+                RequestDispatcher rd = getServletContext().getRequestDispatcher("/shop.jsp");
+                request.setAttribute("alpacas", alpacas);
+                rd.forward(request, response);
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(OnLoginServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } 
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
