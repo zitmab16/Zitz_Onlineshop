@@ -41,10 +41,18 @@
                     <td>
                         <c:out value="${alpaca.amount}"/>
                     </td>
+                    <td>
+                        <input type="button" value="+" onClick="increaseAlpacaAmount(${alpaca.id})" />
+                    </td>
+                    <td>
+                        <input type="button" value="-" onClick="decreaseAlpacaAmount(${alpaca.id})" />
+                    </td>
                 </tr>    
             </c:forEach>
 
         </table>
         <form></form>
+        <script src="shop.js" type="text/javascript"></script>
     </body>
+    
 </html>

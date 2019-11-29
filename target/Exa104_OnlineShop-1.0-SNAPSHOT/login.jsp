@@ -41,7 +41,7 @@
 			<div class="wrap-login100 p-b-160 p-t-50">
 				<form class="login100-form validate-form" >
 					<span class="login100-form-title p-b-43">
-						Zitz-Onlineshop
+						Alpaca Shop
 					</span>
 					
 					<div class="wrap-input100 rs1 validate-input" data-validate = "Username is required">

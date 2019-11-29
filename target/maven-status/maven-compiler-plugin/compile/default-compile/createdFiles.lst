@@ -1,6 +1,8 @@
-BL\Ordering.class
 Servlets\OnLoginServlet.class
-BL\Alpaca.class
+Servlets\CartUpdateServlet$Information.class
 DB\Database.class
 BL\Customer.class
 Servlets\OnStartServlet.class
+BL\Ordering.class
+BL\Alpaca.class
+Servlets\CartUpdateServlet.class
