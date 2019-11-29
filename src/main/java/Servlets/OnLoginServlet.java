@@ -41,21 +41,20 @@ public class OnLoginServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String username = request.getParameter("username");
         String pw = request.getParameter("pw");
-        Database db = Database.getInstance();
+        
         
         try {
-            if (db.checkPassword(username, pw)) {
-                Cookie c = new Cookie("userID",""+db.getUID(username));
+            Database db = Database.getInstance();
+            if (db.login(username, pw)) {
+                Cookie c = new Cookie("userID",""+db.getCustomerID(username));
                 response.addCookie(c);
-                System.out.println("user= "+db.getUID(username));
-                System.out.println("cartid="+db.getcaID(db.getUID(username)));
-                ArrayList<Alpaca> alpacas = db.getAlpacas(db.getcaID(db.getUID(username)));
+                ArrayList<Alpaca> alpacas = db.getCartItems(db.getCustomerCart(db.getCustomerID(username)), db.getItems(db.getCustomerCart(db.getCustomerID(username))));
                 RequestDispatcher rd = getServletContext().getRequestDispatcher("/shop.jsp");
                 request.setAttribute("alpacas", alpacas);
                 rd.forward(request, response);
             }
         } catch (Exception ex) {
-            System.out.println(ex.getMessage());
+            ex.printStackTrace();
         } 
     }
 

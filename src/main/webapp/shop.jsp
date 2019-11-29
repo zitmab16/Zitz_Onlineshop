@@ -23,6 +23,9 @@
                 <td>
                     Price
                 </td>
+                <td>
+                    Current Amount
+                </td>
             </tr>
             <c:forEach items="${requestScope.alpacas}" var="alpaca">
                 <tr>
@@ -34,6 +37,9 @@
                     </td>
                     <td>
                         <c:out value="${alpaca.price}"/>
+                    </td>
+                    <td>
+                        <c:out value="${alpaca.amount}"/>
                     </td>
                 </tr>    
             </c:forEach>

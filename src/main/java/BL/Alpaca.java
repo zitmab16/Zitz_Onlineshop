@@ -12,27 +12,38 @@ package BL;
 public class Alpaca {
     private int id;
     private String typ;
-    private int price;
+    private double price;
     private int amount;
 
-    public Alpaca(int id, String typ, int price,int amount) {
+    public Alpaca(int id, String typ, double price, int amount) {
         this.id = id;
         this.typ = typ;
         this.price = price;
-        this.amount=amount;
+        this.amount = amount;
     }
 
     public int getId() {
         return id;
     }
 
-    public int getPrice() {
-        return price;
-    }
-
     public String getTyp() {
         return typ;
     }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+    
+    
+
     
  
 }
