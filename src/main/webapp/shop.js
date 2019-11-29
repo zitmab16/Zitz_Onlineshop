@@ -27,6 +27,7 @@ function updateCart(articleid, amount) {
 
         response.json().then(function (data) {
             console.log(data);
+            document.getElementById(articleid).innerHTML = data["amount"];
         }
         );
     }

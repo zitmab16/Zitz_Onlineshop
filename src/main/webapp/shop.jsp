@@ -38,7 +38,7 @@
                     <td>
                         <c:out value="${alpaca.price}"/>
                     </td>
-                    <td>
+                    <td id="<c:out value="${alpaca.id}"/>">
                         <c:out value="${alpaca.amount}"/>
                     </td>
                     <td>
