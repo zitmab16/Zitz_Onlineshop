@@ -1,5 +1,6 @@
 package DB;
 
+import BL.OrderInformation;
 import BL.Ordering;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -178,22 +179,38 @@ public class Database {
             ps.setInt(3, rs.getInt("amount"));
             ps.execute();
         }
-        ps=conn.prepareStatement("DELETE FROM cartarticle WHERE cartid=?");
+        ps = conn.prepareStatement("DELETE FROM cartarticle WHERE cartid=?");
         ps.setInt(1, cartid);
         ps.execute();
-        
+
     }
-    public ArrayList<Ordering> getOrders(int customerid) throws SQLException{
+
+    public ArrayList<Ordering> getOrders(int customerid) throws SQLException {
         ArrayList<Ordering> orders = new ArrayList();
-        PreparedStatement ps =conn.prepareStatement("SELECT * from orderthing WHERE customerid=?;");
+        PreparedStatement ps = conn.prepareStatement("SELECT * from orderthing WHERE customerid=?;");
         ps.setInt(1, customerid);
-        ResultSet rs=ps.executeQuery();
-       
-        while(rs.next()){
-            Ordering order = new Ordering(rs.getInt("orderid"),customerid,rs.getTimestamp("datetime"));
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+            Ordering order = new Ordering(rs.getInt("orderid"), customerid, rs.getTimestamp("datetime"));
             orders.add(order);
         }
-        
-       return orders; 
+
+        return orders;
+    }
+
+    public ArrayList<OrderInformation> getOrderInformation(int orderid) throws SQLException {
+        ArrayList<OrderInformation> informations = new ArrayList<>();
+        PreparedStatement ps = conn.prepareStatement("SELECT a.articlename,a.price,ao.amount,a.articleid "
+                + "FROM articleorder ao INNER JOIN article a ON ao.articleid= a.articleid "
+                + "WHERE orderid=?;");
+        ps.setInt(1, orderid);
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+            OrderInformation info = new OrderInformation(orderid, rs.getInt("articleid"), rs.getInt("price"), rs.getInt("amount"), rs.getString("articlename"));
+            informations.add(info);
+        }
+        return informations;
     }
 }

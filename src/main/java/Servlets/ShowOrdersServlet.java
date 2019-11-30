@@ -5,10 +5,16 @@
  */
 package Servlets;
 
+import DB.Database;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -32,18 +38,26 @@ public class ShowOrdersServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet ShowOrdersServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet ShowOrdersServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+       
+        int customerid = -1;
+        for (Cookie c : request.getCookies()) {
+            if (c.getName().equals("userID")) {
+                customerid = Integer.parseInt(c.getValue());
+            }
         }
+        
+        String forward ="/order.jsp";
+        try {
+            Database db =Database.getInstance();
+            ArrayList orders=db.getOrders(customerid);
+            request.setAttribute("orders", orders);
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            forward="/error.jsp";
+        }
+        RequestDispatcher rd = getServletContext().getRequestDispatcher(forward);
+        rd.forward(request, response);
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

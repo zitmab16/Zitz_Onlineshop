@@ -51,8 +51,9 @@
             </c:forEach>
 
         </table>
-        <form method="POST" action="/OnOrderServlet">
-            <input type="submit" value="order"/>
+        <form method="POST" >
+            <input type="submit" value="order"  formaction="/OnOrderServlet"/>
+            <input type="submit" value="show Orders"  formaction="/ShowOrdersServlet"/>
         </form>
         <script src="shop.js" type="text/javascript"></script>
     </body>

@@ -1,9 +1,13 @@
+Servlets\OrderDetailServlet$Orderid.class
 Servlets\OnLoginServlet.class
+Servlets\OnStartServlet.class
+BL\Alpaca.class
+Servlets\CartUpdateServlet.class
+BL\OrderInformation.class
 Servlets\CartUpdateServlet$Information.class
 DB\Database.class
 BL\Customer.class
-Servlets\OnStartServlet.class
+Servlets\ShowOrdersServlet.class
 Servlets\OnOrderServlet.class
 BL\Ordering.class
-BL\Alpaca.class
-Servlets\CartUpdateServlet.class
+Servlets\OrderDetailServlet.class
