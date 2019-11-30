@@ -51,8 +51,10 @@
             </c:forEach>
 
         </table>
-        <form></form>
+        <form method="POST" action="/OnOrderServlet">
+            <input type="submit" value="order"/>
+        </form>
         <script src="shop.js" type="text/javascript"></script>
     </body>
-    
+
 </html>

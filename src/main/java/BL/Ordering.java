@@ -5,6 +5,7 @@
  */
 package BL;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 /**
@@ -14,9 +15,9 @@ import java.time.LocalDateTime;
 public class Ordering {
     private int id;
     private int customerID;
-    private LocalDateTime datetime;
+    private Timestamp datetime;
 
-    public Ordering(int id, int customerID, LocalDateTime datetime) {
+    public Ordering(int id, int customerID, Timestamp datetime) {
         this.id = id;
         this.customerID = customerID;
         this.datetime = datetime;
@@ -26,7 +27,7 @@ public class Ordering {
         return customerID;
     }
 
-    public LocalDateTime getDatetime() {
+    public Timestamp getDatetime() {
         return datetime;
     }
 

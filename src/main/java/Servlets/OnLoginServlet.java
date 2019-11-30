@@ -8,10 +8,7 @@ package Servlets;
 import BL.Alpaca;
 import DB.Database;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -33,20 +30,16 @@ public class OnLoginServlet extends HttpServlet {
      *
      * @param request servlet request
      * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    {
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response) {
         response.setContentType("text/html;charset=UTF-8");
         String username = request.getParameter("username");
         String pw = request.getParameter("pw");
-        
-        
+
         try {
             Database db = Database.getInstance();
             if (db.login(username, pw)) {
-                Cookie c = new Cookie("userID",""+db.getCustomerID(username));
+                Cookie c = new Cookie("userID", "" + db.getCustomerID(username));
                 response.addCookie(c);
                 ArrayList<Alpaca> alpacas = db.getCartItems(db.getCustomerCart(db.getCustomerID(username)), db.getItems(db.getCustomerCart(db.getCustomerID(username))));
                 RequestDispatcher rd = getServletContext().getRequestDispatcher("/shop.jsp");
@@ -55,7 +48,7 @@ public class OnLoginServlet extends HttpServlet {
             }
         } catch (Exception ex) {
             ex.printStackTrace();
-        } 
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

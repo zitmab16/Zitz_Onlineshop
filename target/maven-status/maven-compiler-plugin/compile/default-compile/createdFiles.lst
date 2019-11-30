@@ -3,6 +3,7 @@ Servlets\CartUpdateServlet$Information.class
 DB\Database.class
 BL\Customer.class
 Servlets\OnStartServlet.class
+Servlets\OnOrderServlet.class
 BL\Ordering.class
 BL\Alpaca.class
 Servlets\CartUpdateServlet.class

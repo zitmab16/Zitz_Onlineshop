@@ -4,14 +4,38 @@
     Author     : vizug
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Orders</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <table>
+            <tr>
+                <td>Datetime</td>
+                <td>OrderID</td>
+                <td>Details</td>
+            </tr>
+            <c:forEach items="${requestScope.orders}" var="order">
+                <tr>
+                    <td>
+                        <c:out value="${order.datetime}"/>
+                    </td>
+                    <td>
+                        <c:out value="${order.id}"/>
+                    </td>
+                    <td>
+                        <input type="button" value="..."/>
+                    </td>
+                </tr>
+
+
+            </c:forEach>
+
+
+        </table>
     </body>
 </html>
