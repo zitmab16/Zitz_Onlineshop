@@ -47,14 +47,19 @@ public class ShowOrdersServlet extends HttpServlet {
         }
         
         String forward ="/order.jsp";
+        String errorstring="";
         try {
             Database db =Database.getInstance();
             ArrayList orders=db.getOrders(customerid);
             request.setAttribute("orders", orders);
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            forward="/error.jsp";
+        } catch (Exception ex) {
+            StackTraceElement[] errors = ex.getStackTrace();
+            for (int i = 0; i < errors.length; i++) {
+                errorstring += errors[i].toString() + "\n";
+            }
+            forward = "/error.jsp";
         }
+        request.setAttribute("errors",errorstring);
         RequestDispatcher rd = getServletContext().getRequestDispatcher(forward);
         rd.forward(request, response);
         

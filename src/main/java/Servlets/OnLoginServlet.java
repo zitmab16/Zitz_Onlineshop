@@ -32,25 +32,34 @@ public class OnLoginServlet extends HttpServlet {
      * @param request servlet request
      * @param response servlet response
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response) {
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
         response.setContentType("text/html;charset=UTF-8");
         PassEncryption passenc = new PassEncryption();
         String username = request.getParameter("username");
         String pw = passenc.encryptString(request.getParameter("pw"));
-        
+
+        String forward = "/shop.jsp";
+        String errorstring="";
         try {
             Database db = Database.getInstance();
             if (db.login(username, pw)) {
                 Cookie c = new Cookie("userID", "" + db.getCustomerID(username));
                 response.addCookie(c);
                 ArrayList<Alpaca> alpacas = db.getCartItems(db.getCustomerCart(db.getCustomerID(username)), db.getItems(db.getCustomerCart(db.getCustomerID(username))));
-                RequestDispatcher rd = getServletContext().getRequestDispatcher("/shop.jsp");
+
                 request.setAttribute("alpacas", alpacas);
-                rd.forward(request, response);
+
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
+            StackTraceElement[] errors = ex.getStackTrace();
+            for (int i = 0; i < errors.length; i++) {
+                errorstring += errors[i].toString() + "\n";
+            }
+            forward = "/error.jsp";
         }
+        request.setAttribute("errors",errorstring);
+        RequestDispatcher rd = getServletContext().getRequestDispatcher(forward);
+        rd.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
