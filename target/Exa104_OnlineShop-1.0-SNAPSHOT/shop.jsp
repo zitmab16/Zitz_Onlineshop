@@ -14,23 +14,30 @@
     <body>
         <table>
             <tr>
-                <td>
+                <th>
                     ID
-                </td>
-                <td>
+                </th>
+                <th>
                     Type
-                </td>
-                <td>
+                </th>
+                <th>
                     Price
-                </td>
-                <td>
+                </th>
+                <th>
                     Current Amount
-                </td>
+                </th>
+                <th>
+                    Increase
+                </th>
+                <th>
+                    Decrease
+                </th>
             </tr>
             <c:forEach items="${requestScope.alpacas}" var="alpaca">
                 <tr>
                     <td>
                         <c:out value="${alpaca.id}"/>
+                        <link href="Design.css" rel="stylesheet" type="text/css"/>
                     </td>
                     <td>
                         <c:out value="${alpaca.typ}"/>
@@ -52,10 +59,10 @@
 
         </table>
         <form method="POST" >
-            <input type="submit" value="order"  formaction="/OnOrderServlet"/>
-            <input type="submit" value="show Orders"  formaction="/ShowOrdersServlet"/>
+            <input type="submit" value="order"  class="button" formaction="/OnOrderServlet"/>
+            <input type="submit" value="show Orders" class="button" formaction="/ShowOrdersServlet"/>
         </form>
         <script src="shop.js" type="text/javascript"></script>
     </body>
-
+    <link href="Design.css" rel="stylesheet" type="text/css"/>
 </html>

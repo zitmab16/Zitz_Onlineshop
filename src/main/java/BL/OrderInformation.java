@@ -16,6 +16,16 @@ public class OrderInformation {
     private int amount;
     private String name;
 
+    /**
+     * 
+     * @param orderid
+     * @param articleid
+     * @param price
+     * @param amount
+     * @param name 
+     * Klasse für das Anzeigen der OrderDetails
+     */
+    
     public OrderInformation(int orderid, int articleid, int price, int amount,String name) {
         this.orderid = orderid;
         this.articleid = articleid;

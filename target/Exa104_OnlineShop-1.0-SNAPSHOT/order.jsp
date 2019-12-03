@@ -13,6 +13,7 @@
         <title>Orders</title>
     </head>
     <body>
+        <!-- Tabelle zum anzeigen der Orders   -->
         <table>
             <tr>
                 <td>Datetime</td>
@@ -38,9 +39,12 @@
 
         </table>
 
-    <div id="result">
+        <p>Details</p>
+        <!-- Div Layer zum anzeigen der dynamischen Daten von AJAX  -->
+        <div id="result">
 
-    </div>
-    <script src="orderDetails.js" type="text/javascript"></script>
-</body>
+        </div>
+        <script src="orderDetails.js" type="text/javascript"></script>
+        <link href="Design.css" rel="stylesheet" type="text/css"/>
+    </body>
 </html>

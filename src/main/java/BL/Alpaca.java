@@ -15,6 +15,14 @@ public class Alpaca {
     private double price;
     private int amount;
 
+    /**
+     * 
+     * @param id
+     * @param typ
+     * @param price
+     * @param amount 
+     * Klasse der Artikel
+     */
     public Alpaca(int id, String typ, double price, int amount) {
         this.id = id;
         this.typ = typ;

@@ -34,6 +34,14 @@ public class Database {
         return instance;
     }
 
+    /**
+     * Methode für die Überprüfung des Passworts für den User
+     *
+     * @param username
+     * @param pass
+     * @return
+     * @throws SQLException
+     */
     public boolean login(String username, String pass) throws SQLException {
         PreparedStatement ps = conn.prepareStatement("SELECT COUNT(*) FROM customer WHERE username = ? AND pass = ?");
         ps.setString(1, username);
@@ -45,6 +53,13 @@ public class Database {
         return rs.getInt("count") == 1;
     }
 
+    /**
+     * Returned die CustomerID
+     *
+     * @param username
+     * @return
+     * @throws SQLException
+     */
     public int getCustomerID(String username) throws SQLException {
         PreparedStatement ps = conn.prepareStatement("SELECT customerid FROM customer WHERE username = ?");
         ps.setString(1, username);
@@ -56,6 +71,13 @@ public class Database {
 
     }
 
+    /**
+     * Rückgabe einer ArrayList mit den Artikeln
+     *
+     * @param cartid
+     * @return
+     * @throws SQLException
+     */
     public ArrayList<BL.Alpaca> getItems(int cartid) throws SQLException {
         ArrayList<BL.Alpaca> items = new ArrayList();
 
@@ -69,6 +91,14 @@ public class Database {
         return items;
     }
 
+    /**
+     * Updated den Amount der Artikel für die Anzeige
+     *
+     * @param cartid
+     * @param items
+     * @return
+     * @throws SQLException
+     */
     public ArrayList<BL.Alpaca> getCartItems(int cartid, ArrayList<BL.Alpaca> items) throws SQLException {
         PreparedStatement ps = conn.prepareStatement("SELECT articleid, amount FROM cartarticle WHERE cartid = ?");
         ps.setInt(1, cartid);
@@ -86,13 +116,22 @@ public class Database {
         return items;
     }
 
+    /**
+     *Methode um das Cart des Users zu bekommen
+     * Wenn noch kein Cart vorhanden ist wird ein Neues erstellt und nochmals rekursiv aufgerufen um die CartID zu bekommen
+     * @param customerid
+     * @return
+     * @throws SQLException
+     */
     public int getCustomerCart(int customerid) throws SQLException {
+        //Anzahl der gesamten Carts
         PreparedStatement ps = conn.prepareCall("SELECT COUNT(*) FROM cart WHERE customerid = ?");
         ps.setInt(1, customerid);
 
         ResultSet rs = ps.executeQuery();
         rs.next();
 
+        //wenn ein cart vorhanden ist wird die cartid zurückgegeben
         if (rs.getInt("count") == 1) {
             ps = conn.prepareStatement("SELECT cartid FROM cart WHERE customerid = ?");
             ps.setInt(1, customerid);
@@ -101,6 +140,7 @@ public class Database {
 
             return rs.getInt("cartid");
         } else {
+            //erstellt cart wenn es noch keines gibt und ruft die methode rekursiv auf 
             ps = conn.prepareStatement("INSERT INTO cart(customerid) VALUES(?)");
             ps.setInt(1, customerid);
             ps.execute();
@@ -109,7 +149,16 @@ public class Database {
         }
     }
 
+    /**
+     * Methode die die geänderte Anzahl züruckgibt
+     * @param articleid
+     * @param cartid
+     * @param amount
+     * @return
+     * @throws SQLException 
+     */
     public int updateCart(int articleid, int cartid, int amount) throws SQLException {
+        //Anzahl der Cartarticles 
         PreparedStatement ps = conn.prepareStatement("SELECT COUNT(*)"
                 + " FROM cartarticle"
                 + " WHERE articleid =? AND cartid =?;");
@@ -118,6 +167,7 @@ public class Database {
         ResultSet rs = ps.executeQuery();
         rs.next();
 
+        //erneuert den Amount des cartarticles
         if (rs.getInt("count") == 1) {
             ps = conn.prepareStatement("SELECT amount FROM cartarticle WHERE articleid=? AND cartid=?;");
             ps.setInt(1, articleid);
@@ -128,6 +178,10 @@ public class Database {
 
             int currentamount = rs.getInt("amount") + amount;
 
+            if (currentamount < 0) {
+                return 0;
+            }
+            //updated den amount für das übergebene cartarticle
             ps = conn.prepareStatement("UPDATE cartarticle SET amount=? WHERE articleid=? AND cartid=?; ");
             ps.setInt(1, currentamount);
             ps.setInt(2, articleid);
@@ -135,11 +189,13 @@ public class Database {
 
             ps.execute();
             return currentamount;
+
         } else {
+            //erstellt ein neues cartarticle wenn keins vorhanden ist und übergibt den amount
             ps = conn.prepareStatement("INSERT INTO cartarticle(cartid,articleid,amount) VALUES(?,?,?)");
             ps.setInt(1, cartid);
             ps.setInt(2, articleid);
-            ps.setInt(3, amount);
+            ps.setInt(3,0);
 
             ps.execute();
             return amount;
@@ -147,11 +203,18 @@ public class Database {
 
     }
 
+    /**
+     *erstellt neue Order in der Datenbank
+     * @param customerid
+     * @throws SQLException 
+     */
     public void insertOrderthing(int customerid) throws SQLException {
         PreparedStatement ps = conn.prepareStatement("INSERT INTO orderthing(customerid) VALUES(?);");
         ps.setInt(1, customerid);
         ps.execute();
 
+        
+        //Statement um die orderid zu holen
         int orderid = -1;
         ps = conn.prepareStatement("SELECT orderid "
                 + "FROM orderthing "
@@ -165,6 +228,7 @@ public class Database {
         rs.next();
         orderid = rs.getInt("orderid");
 
+        //Statement um die CartID zu bekommen
         int cartid = getCustomerCart(customerid);
         ps = conn.prepareStatement("SELECT * "
                 + "FROM cartarticle "
@@ -173,18 +237,26 @@ public class Database {
         rs = ps.executeQuery();
 
         while (rs.next()) {
+            //einfügen des artikels mit dem amount
             ps = conn.prepareStatement("INSERT INTO articleorder(articleid,orderid,amount) VALUES(?,?,?);");
             ps.setInt(1, rs.getInt("articleid"));
             ps.setInt(2, orderid);
             ps.setInt(3, rs.getInt("amount"));
             ps.execute();
         }
+        //Löschen der cartarticle mit dem jeweiligen cartid
         ps = conn.prepareStatement("DELETE FROM cartarticle WHERE cartid=?");
         ps.setInt(1, cartid);
         ps.execute();
 
     }
 
+    /**
+     * Methode die die einzelnen Bestellungen zurückgibt
+     * @param customerid
+     * @return
+     * @throws SQLException 
+     */
     public ArrayList<Ordering> getOrders(int customerid) throws SQLException {
         ArrayList<Ordering> orders = new ArrayList();
         PreparedStatement ps = conn.prepareStatement("SELECT * from orderthing WHERE customerid=?;");
@@ -199,6 +271,12 @@ public class Database {
         return orders;
     }
 
+    /**
+     * Methode um eine Liste der Artikel mit den BestellDetails zu bekommen
+     * @param orderid
+     * @return
+     * @throws SQLException 
+     */
     public ArrayList<OrderInformation> getOrderInformation(int orderid) throws SQLException {
         ArrayList<OrderInformation> informations = new ArrayList<>();
         PreparedStatement ps = conn.prepareStatement("SELECT a.articlename,a.price,ao.amount,a.articleid "

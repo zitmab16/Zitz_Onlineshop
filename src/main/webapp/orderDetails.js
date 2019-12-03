@@ -24,6 +24,7 @@ function showDetails(orderid) {
             var table = "<table>";
 
             table += "<tr> <td>Articlename</td> <td>Amount</td> <td>Price</td></tr>"
+            //befüllen der Tabelle
             for (var i = 0; i < data.length; i++)
             {
                 table += "<tr>";
@@ -35,6 +36,7 @@ function showDetails(orderid) {
             table += "</table>";
 
             console.log(table);
+            //den Div Layer Result mit dem Content der var table befüllen
             document.getElementById("result").innerHTML = table;
         }
         );

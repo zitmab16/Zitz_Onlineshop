@@ -14,6 +14,13 @@ public class Customer {
     private String username;
     private String password;
 
+    /**
+     * Klasse für den Benutzer
+     * @param id
+     * @param username
+     * @param password 
+     * 
+     */
     public Customer(int id, String username, String password) {
         this.id = id;
         this.username = username;

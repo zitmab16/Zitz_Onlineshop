@@ -8,10 +8,7 @@ package BL;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
-/**
- *
- * @author vizug
- */
+
 public class Ordering {
     private int id;
     private int customerID;
