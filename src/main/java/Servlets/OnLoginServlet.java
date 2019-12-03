@@ -6,6 +6,7 @@
 package Servlets;
 
 import BL.Alpaca;
+import BL.PassEncryption;
 import DB.Database;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,9 +34,10 @@ public class OnLoginServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) {
         response.setContentType("text/html;charset=UTF-8");
+        PassEncryption passenc = new PassEncryption();
         String username = request.getParameter("username");
-        String pw = request.getParameter("pw");
-
+        String pw = passenc.encryptString(request.getParameter("pw"));
+        
         try {
             Database db = Database.getInstance();
             if (db.login(username, pw)) {

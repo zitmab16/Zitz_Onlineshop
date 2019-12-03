@@ -1,6 +1,7 @@
 Servlets\OrderDetailServlet$Orderid.class
 Servlets\OnLoginServlet.class
 Servlets\OnStartServlet.class
+BL\PassEncryption.class
 BL\Alpaca.class
 Servlets\CartUpdateServlet.class
 BL\OrderInformation.class
