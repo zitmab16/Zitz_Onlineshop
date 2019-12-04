@@ -97,6 +97,7 @@ public class OrderDetailServlet extends HttpServlet {
     }// </editor-fold>
 
     private class Orderid {
+
         private int orderid;
 
         public Orderid(int orderid) {
@@ -110,7 +111,7 @@ public class OrderDetailServlet extends HttpServlet {
         public void setOrderid(int orderid) {
             this.orderid = orderid;
         }
-        
+
     }
 
 }

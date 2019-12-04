@@ -38,19 +38,19 @@ public class ShowOrdersServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-       
+
         int customerid = -1;
         for (Cookie c : request.getCookies()) {
             if (c.getName().equals("userID")) {
                 customerid = Integer.parseInt(c.getValue());
             }
         }
-        
-        String forward ="/order.jsp";
-        String errorstring="";
+
+        String forward = "/order.jsp";
+        String errorstring = "";
         try {
-            Database db =Database.getInstance();
-            ArrayList orders=db.getOrders(customerid);
+            Database db = Database.getInstance();
+            ArrayList orders = db.getOrders(customerid);
             request.setAttribute("orders", orders);
         } catch (Exception ex) {
             StackTraceElement[] errors = ex.getStackTrace();
@@ -59,10 +59,10 @@ public class ShowOrdersServlet extends HttpServlet {
             }
             forward = "/error.jsp";
         }
-        request.setAttribute("errors",errorstring);
+        request.setAttribute("errors", errorstring);
         RequestDispatcher rd = getServletContext().getRequestDispatcher(forward);
         rd.forward(request, response);
-        
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

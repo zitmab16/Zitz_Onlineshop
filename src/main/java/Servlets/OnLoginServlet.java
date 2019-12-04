@@ -32,7 +32,7 @@ public class OnLoginServlet extends HttpServlet {
      * @param request servlet request
      * @param response servlet response
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response){
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response) {
         response.setContentType("text/html;charset=UTF-8");
         PassEncryption passenc = new PassEncryption();
         String username = request.getParameter("username");
@@ -45,13 +45,16 @@ public class OnLoginServlet extends HttpServlet {
             if (db.login(username, pw)) {
                 Cookie c = new Cookie("userID", "" + db.getCustomerID(username));
                 response.addCookie(c);
+                //ArrayList alpacas mit den Übergabeparameter cartid, ArrayList<Alpaca>
                 ArrayList<Alpaca> alpacas = db.getCartItems(db.getCustomerCart(db.getCustomerID(username)), db.getItems(db.getCustomerCart(db.getCustomerID(username))));
 
                 request.setAttribute("alpacas", alpacas);
-                RequestDispatcher rd = getServletContext().getRequestDispatcher("/shop.jsp");
-                rd.forward(request, response);
-
+                forward = "/shop.jsp";
+            }else{
+                forward = "/login.jsp";
             }
+            RequestDispatcher rd = getServletContext().getRequestDispatcher(forward);
+            rd.forward(request, response);
         } catch (Exception ex) {
 //            StackTraceElement[] errors = ex.getStackTrace();
 //            for (int i = 0; i < errors.length; i++) {

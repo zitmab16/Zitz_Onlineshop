@@ -92,7 +92,7 @@ public class Database {
     }
 
     /**
-     * Updated den Amount der Artikel für die Anzeige
+     * Anzeigen eines bestehenden Carts mit der Menge der Artikel
      *
      * @param cartid
      * @param items
@@ -105,6 +105,7 @@ public class Database {
 
         ResultSet rs = ps.executeQuery();
 
+        //Setzt der Amount der einzelnen Artikel auf das jeweilige Objekt
         while (rs.next()) {
             for (BL.Alpaca i : items) {
                 if (i.getId() == rs.getInt("articleid")) {
@@ -117,8 +118,10 @@ public class Database {
     }
 
     /**
-     *Methode um das Cart des Users zu bekommen
-     * Wenn noch kein Cart vorhanden ist wird ein Neues erstellt und nochmals rekursiv aufgerufen um die CartID zu bekommen
+     * Methode um das Cart des Users zu bekommen Wenn noch kein Cart vorhanden
+     * ist wird ein Neues erstellt und nochmals rekursiv aufgerufen um die
+     * CartID zu bekommen
+     *
      * @param customerid
      * @return
      * @throws SQLException
@@ -141,7 +144,7 @@ public class Database {
             return rs.getInt("cartid");
         } else {
             //erstellt cart wenn es noch keines gibt und ruft die methode rekursiv auf 
-            ps = conn.prepareStatement("INSERT INTO cart(customerid) VALUES(?)");
+            ps = conn.prepareStatement("INSERT INTO cart(customerFid) VALUES(?)");
             ps.setInt(1, customerid);
             ps.execute();
 
@@ -151,11 +154,12 @@ public class Database {
 
     /**
      * Methode die die geänderte Anzahl züruckgibt
+     *
      * @param articleid
      * @param cartid
      * @param amount
      * @return
-     * @throws SQLException 
+     * @throws SQLException
      */
     public int updateCart(int articleid, int cartid, int amount) throws SQLException {
         //Anzahl der Cartarticles 
@@ -195,7 +199,7 @@ public class Database {
             ps = conn.prepareStatement("INSERT INTO cartarticle(cartid,articleid,amount) VALUES(?,?,?)");
             ps.setInt(1, cartid);
             ps.setInt(2, articleid);
-            ps.setInt(3,0);
+            ps.setInt(3, 0);
 
             ps.execute();
             return amount;
@@ -204,16 +208,16 @@ public class Database {
     }
 
     /**
-     *erstellt neue Order in der Datenbank
+     * erstellt neue Order in der Datenbank
+     *
      * @param customerid
-     * @throws SQLException 
+     * @throws SQLException
      */
     public void insertOrderthing(int customerid) throws SQLException {
         PreparedStatement ps = conn.prepareStatement("INSERT INTO orderthing(customerid) VALUES(?);");
         ps.setInt(1, customerid);
         ps.execute();
 
-        
         //Statement um die orderid zu holen
         int orderid = -1;
         ps = conn.prepareStatement("SELECT orderid "
@@ -232,7 +236,7 @@ public class Database {
         int cartid = getCustomerCart(customerid);
         ps = conn.prepareStatement("SELECT * "
                 + "FROM cartarticle "
-                + "WHERE cartid=?;");
+                + "WHERE cartid=?; AND amount>0");
         ps.setInt(1, cartid);
         rs = ps.executeQuery();
 
@@ -253,9 +257,10 @@ public class Database {
 
     /**
      * Methode die die einzelnen Bestellungen zurückgibt
+     *
      * @param customerid
      * @return
-     * @throws SQLException 
+     * @throws SQLException
      */
     public ArrayList<Ordering> getOrders(int customerid) throws SQLException {
         ArrayList<Ordering> orders = new ArrayList();
@@ -273,9 +278,10 @@ public class Database {
 
     /**
      * Methode um eine Liste der Artikel mit den BestellDetails zu bekommen
+     *
      * @param orderid
      * @return
-     * @throws SQLException 
+     * @throws SQLException
      */
     public ArrayList<OrderInformation> getOrderInformation(int orderid) throws SQLException {
         ArrayList<OrderInformation> informations = new ArrayList<>();
